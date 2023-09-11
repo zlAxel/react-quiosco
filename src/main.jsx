@@ -9,9 +9,9 @@ import './assets/css/main.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-		<QuioscoProvider>
-			<RouterProvider router={ router } />
-		</QuioscoProvider>
+      <QuioscoProvider>
+        <RouterProvider router={ router } />
+      </QuioscoProvider>
     </React.StrictMode>
     ,
 )

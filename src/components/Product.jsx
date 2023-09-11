@@ -1,12 +1,15 @@
 
 import { formatPrice } from "../helpers";
+import { useQuiosco } from "../hooks/useQuiosco";
 
 export const Product = ({ product }) => {
 
-    const { id, name, price, image } = product;
+    const { id, name, price, image } = product; // * Destructuramos el producto
+
+    const { modal, setModal, setProduct } = useQuiosco(); // * Extraemos el estado del modal
 
     return (
-        <article className="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer">
+        <article onClick={ () => { setModal( ! modal ); setProduct(product); } } className="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer">
             <img src={`/img/${ image }.jpg`} alt={ name } className="w-full h-80 object-cover object-center" />
 
             <div className="py-5 px-8">

@@ -1,10 +1,13 @@
 
 import { Logo } from "./utility/Logo"
 
-import { categories } from "../data/categories";
 import { Category } from "./Category";
+import { useQuiosco } from "../hooks/useQuiosco";
 
 export const Sidebar = () => {
+
+    const { categories } = useQuiosco();
+    
     return (
         <aside className="md:w-72">
             <header className="p-4">

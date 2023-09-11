@@ -1,18 +1,19 @@
 
 import { Product } from "../components/Product";
-import { products } from "../data/products"
+import { products as productsDB } from "../data/products"
 
-import useQuiosco from "../hooks/useQuiosco";
+import { useQuiosco } from "../hooks/useQuiosco";
 
 export const Index = () => {
 
-    const { hola } = useQuiosco();
-    console.log( hola );
+    const { currentCategory } = useQuiosco();
+
+    const products = productsDB.filter( product => product.category_id === currentCategory.id )
 
     return (
         <>
             <h1 className="text-4xl font-black mt-10">
-                Inicio
+                { currentCategory.name }
             </h1>
             <p className="text-xl">
                 Elige y personaliza tu pedido a continuación
