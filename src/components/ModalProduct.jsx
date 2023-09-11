@@ -54,7 +54,6 @@ export const ModalProduct = () => {
                     </button>
                 </div>
             </div>
-            {/* <button type="button" onClick={ () => { setModal( ! modal ); setProduct({}); } }>Cerrar</button> */}
         </section>
         
     )
