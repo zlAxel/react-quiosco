@@ -1,16 +1,26 @@
 
 import { useQuiosco } from "../hooks/useQuiosco";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { formatPrice } from "../helpers";
 
 export const ModalProduct = () => {
 
-    const { modal, setModal, product, setProduct } = useQuiosco(); // * Extraemos el estado global
+    const { modal, setModal, product, setProduct, handleClickOrder, order } = useQuiosco(); // * Extraemos el estado global
 
     const { name, price, image } = product; // * Destructuring del producto
 
-    const [amount, setAmount] = useState(1)
+    const [amount, setAmount] = useState( 1 )
+    const [edited, setEdited] = useState( false )
+
+    useEffect(() => {
+        if ( order.some( orderState => orderState.id === product.id ) ){
+            const productOrder = order.find( orderState => orderState.id === product.id )
+            setAmount( productOrder.amount )
+            setEdited( true )
+        }
+    }, [order])
+    
 
     // ? Si no hay producto, no se muestra el modal
     if ( Object.keys(product).length == 0 ) 
@@ -49,8 +59,10 @@ export const ModalProduct = () => {
                         </button> {/* // TODO | Sumar | */}
                     </div>
                     
-                    <button type="button" className="bg-amber-500 hover:bg-amber-600 transition-colors w-1/2 text-white font-bold py-2 px-4 rounded">
-                        Agregar al carrito
+                    <button type="button" onClick={ () => handleClickOrder( { ...product, amount } ) } className="bg-amber-500 hover:bg-amber-600 transition-colors w-1/2 text-white font-bold py-2 px-4 rounded">
+                        {
+                            edited ? 'Editar pedido' : 'Agregar al carrito'
+                        }
                     </button>
                 </div>
             </div>

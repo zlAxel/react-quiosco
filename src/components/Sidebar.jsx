@@ -23,7 +23,7 @@ export const Sidebar = () => {
             </section>
 
             <footer className="my-5 py-5">
-                <button type="button" className="text-center bg-red-500 w-full p-3 font-bold text-white truncate">Agregar gasto</button>
+                <button type="button" className="text-center bg-red-500 w-full p-3 font-bold text-white truncate">Cancelar orden</button>
             </footer>
         </aside>
     )

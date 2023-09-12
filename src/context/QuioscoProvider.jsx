@@ -14,9 +14,23 @@ export const QuioscoProvider = ({ children }) => {
     const [currentCategory, setCurrentCategory] = useState(categories[0]) // * Estado dinamico para la categoria actual
     const [modal, setModal] = useState(false) // * Estado dinamico para el modal
     const [product, setProduct] = useState({})
+    const [order, setOrder] = useState([])
+
+    const handleClickOrder = ( { category_id, image, ...product } ) => {
+        
+
+        if ( order.some( orderState => orderState.id === product.id ) ){
+            const verifiedOrder = order.map( orderState => orderState.id === product.id ? product : orderState )
+            setOrder( verifiedOrder )
+        }else{
+            setOrder([ ...order, product ])
+        }
+
+        setModal( false )
+    }
     
     return (
-        <QuioscoContext.Provider value={{ categories, currentCategory, setCurrentCategory, modal, setModal, product, setProduct }}>
+        <QuioscoContext.Provider value={{ categories, currentCategory, setCurrentCategory, modal, setModal, product, setProduct, order, handleClickOrder }}>
             { children }
         </QuioscoContext.Provider>
     );
