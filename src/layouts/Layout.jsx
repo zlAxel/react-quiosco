@@ -10,6 +10,8 @@ import { Summary } from "../components/Summary"
 
 import { useQuiosco } from "../hooks/useQuiosco";
 import { ModalProduct } from "../components/ModalProduct";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // ! ----------------------------------------------------
 // ! Code
@@ -55,6 +57,8 @@ export const  Layout = () => {
             >
                 <ModalProduct />
             </Modal>
+
+            <ToastContainer />
         </>
     )
 }
