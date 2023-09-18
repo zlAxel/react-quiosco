@@ -4,7 +4,7 @@ import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 // ! Importamos los datos
-// import { categories as categoriesDB } from "../data/categories";
+import { getCategories } from "../data/categories";
 
 export const QuioscoContext = createContext();
 import axios from "axios";
@@ -20,7 +20,10 @@ export const QuioscoProvider = ({ children }) => {
     const [total, setTotal] = useState(0) // * Estado dinamico para el total de la orden
 
     useEffect(() => {
-        getCategories()
+        getCategories().then( data => {
+            setCategories( data )
+            setCurrentCategory( data[0] )
+        })
     }, [])
     
 
@@ -29,26 +32,14 @@ export const QuioscoProvider = ({ children }) => {
         setTotal( newTotal )
     }, [order]);
 
-    // ? Consumimos categoriesDB asincrona para obtener los datos de la API
-    const getCategories = async () => {
-        try {
-            const { data } = await axios( "http://localhost:8000/api/categorias" )
-            
-            setCategories( data.data )
-            setCurrentCategory( data.data[0] )
-        } catch (error) {
-            console.log( error )
-        }
-    }
-
     // ? Creamos función para manejar el evento click en el boton de ordenar
-    const handleClickOrder = ( { category_id, ...product } ) => {
+    const handleClickOrder = ( { category_id, ...product } ) => { // * Con el operador rest le decimos que category_id no lo tome en cuenta y lo elimine del objeto
         if ( order.some( orderState => orderState.id === product.id ) ){
             const verifiedOrder = order.map( orderState => orderState.id === product.id ? product : orderState )
             setOrder( verifiedOrder )
             toast.success(`Pedido actualizado`)
         }else{
-            setOrder([ ...order, product ]);
+            setOrder([ ...order, product ]); // * Con los 3 puntos le decimos que mantenga los productos que ya estaban en el estado y agregue el nuevo
             toast.success(`Agregaste ${ product.name } a tu orden`)
         }
 

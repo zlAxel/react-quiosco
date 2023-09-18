@@ -1,4 +1,16 @@
 
+import { axiosInstance } from "../config/axios";
+
+export async function getCategories() {
+    try {
+        const { data } = await axiosInstance( '/api/categorias' )
+        
+        return data.data
+    } catch (error) {
+        console.log( error )
+    }
+}
+
 // export const categories = [
 //     {
 //         icon: "cafe",
