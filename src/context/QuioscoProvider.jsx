@@ -18,6 +18,7 @@ export const QuioscoProvider = ({ children }) => {
     const [product, setProduct] = useState({}) // * Estado dinamico para el producto
     const [order, setOrder] = useState([]) // * Estado para almacenar todas las ordenes
     const [total, setTotal] = useState(0) // * Estado dinamico para el total de la orden
+    const [errors, setErrors] = useState([]) // * Estado para los errores
 
     useEffect(() => {
         getCategories().then( data => {
@@ -64,9 +65,12 @@ export const QuioscoProvider = ({ children }) => {
     
     return (
         <QuioscoContext.Provider value={{ 
-            categories, currentCategory, setCurrentCategory, modal, setModal, product, 
-            setProduct, order, handleClickOrder, handleEditarCantidad, handleDeleteCheckoutProduct,
-            total
+            categories, currentCategory, setCurrentCategory, 
+            modal, setModal, 
+            product, setProduct, order, 
+            handleClickOrder, handleEditarCantidad, handleDeleteCheckoutProduct,
+            total, 
+            errors, setErrors
         }}>
             { children }
         </QuioscoContext.Provider>
