@@ -1,5 +1,6 @@
 
 import { Link } from "react-router-dom"
+import { Alert } from "../../components/utility/Alert";
 import { axiosInstance } from "../../config/axios";
 
 import registerForm, { emailRef, nameRef, passwordConfirmationRef, passwordRef } from "../../data/register"
@@ -25,9 +26,9 @@ export const Register = () => {
         }
         
         try {
-            const response = await axiosInstance.post( "/api/register", datos );
+            const { data } = await axiosInstance.post( "/api/register", datos );
 
-            console.log( response );
+            console.log( data.access_token );
         } catch (error) {
             setErrors( Object.values( error.response.data.errors ) );
         }
@@ -41,6 +42,14 @@ export const Register = () => {
             <p>Crea tu cuenta llenando el siguiente formulario</p>
 
             <form onSubmit={ handleSubmit } noValidate className="bg-white shadow-md rounded-md mt-10 px-5 py-10">
+                {/* // ? Errores del formulario */}
+                {
+                    errors.length > 0 && (
+                        errors.map((error, index) => (
+                            <Alert key={ index }>{ error }</Alert>
+                        ))
+                    )
+                }
                 {/* // ? Nombre completo */}
                 {
                     registerForm.map((input, index) => (
