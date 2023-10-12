@@ -1,21 +1,22 @@
 
 import { Link } from "react-router-dom"
 import { Alert } from "../../components/utility/Alert";
-import { axiosInstance } from "../../config/axios";
 
 import registerForm, { emailRef, nameRef, passwordConfirmationRef, passwordRef } from "../../data/register"
+import { useAuth } from "../../hooks/useAuth";
 
 import { useQuiosco } from "../../hooks/useQuiosco";
 
 export const Register = () => {
 
     const { errors, setErrors } = useQuiosco();
+    const { register } = useAuth({ middleware: 'guest', url: '/' });
 
     // ! ----------------------------------------------------
     // ! Creamos el estado del formulario de registro
     // ! ----------------------------------------------------
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         const datos = {
@@ -23,15 +24,9 @@ export const Register = () => {
             email: emailRef.current.value,
             password: passwordRef.current.value,
             password_confirmation: passwordConfirmationRef.current.value
-        }
+        };
         
-        try {
-            const { data } = await axiosInstance.post( "/api/register", datos );
-
-            console.log( data.access_token );
-        } catch (error) {
-            setErrors( Object.values( error.response.data.errors ) );
-        }
+        register( datos );
     }
         
     return (

@@ -12,6 +12,7 @@ import { useQuiosco } from "../hooks/useQuiosco";
 import { ModalProduct } from "../components/ModalProduct";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from "../hooks/useAuth";
 
 // ! ----------------------------------------------------
 // ! Code
@@ -35,6 +36,10 @@ Modal.setAppElement("#root");
 export const  Layout = () => {
 
     const { modal, setModal, product, setProduct } = useQuiosco();
+    
+    const { user, error } = useAuth({
+        'middleware': 'auth',
+    });
 
     return (
         <>
