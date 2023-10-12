@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 
 // ! Importamos los datos
 import { getCategories } from "../data/categories";
+import { axiosInstance } from "../config/axios";
 
 export const QuioscoContext = createContext();
-import axios from "axios";
 
 export const QuioscoProvider = ({ children }) => {
 
@@ -56,19 +56,56 @@ export const QuioscoProvider = ({ children }) => {
         setModal( ! modal )
     }
 
+    // ? Creamos función para manejar el evento click en el boton de eliminar producto
     const handleDeleteCheckoutProduct = id => {
         const verifiedOrder = order.filter( orderState => orderState.id !== id )
         setOrder( verifiedOrder )
 
         toast.success(`Producto eliminado de tu orden`)
     }
+
+    // ? Creamos función para manejar el evento submit del formulario de confirmar pedido
+    const handleSubmitNuevaOrden = async ( logout ) => {
+        try {
+
+            const auth_token = localStorage.getItem('AUTH_TOKEN')
+
+            const { data } = await axiosInstance.post('/api/pedidos', {
+                total,
+                productos: order.map( orderState => {
+                    return {
+                        id: orderState.id,
+                        cantidad: orderState.amount
+                    }
+                })
+            }, {
+                headers: {
+                    Authorization: `Bearer ${ auth_token }`
+                }
+            })
+
+            toast.success( data.message )
+
+            setTimeout(() => {
+                setOrder([]);
+            }, 1000);
+
+            setTimeout(() => {
+                localStorage.removeItem('AUTH_TOKEN')
+                logout();
+            }, 3000);
+        } catch (error) {
+            console.log(error.response.data)
+            setErrors( error.response.data )
+        }
+    };
     
     return (
         <QuioscoContext.Provider value={{ 
             categories, currentCategory, setCurrentCategory, 
             modal, setModal, 
             product, setProduct, order, 
-            handleClickOrder, handleEditarCantidad, handleDeleteCheckoutProduct,
+            handleClickOrder, handleEditarCantidad, handleDeleteCheckoutProduct, handleSubmitNuevaOrden,
             total, 
             errors, setErrors
         }}>

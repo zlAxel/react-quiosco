@@ -1,13 +1,24 @@
 
 import { formatPrice } from "../helpers"
+import { useAuth } from "../hooks/useAuth"
 import { useQuiosco } from "../hooks/useQuiosco"
 import { SummaryProduct } from "./SummaryProduct"
 
 export const Summary = () => {
 
-    const { order, total } = useQuiosco()
+    const { order, total, handleSubmitNuevaOrden } = useQuiosco()
+
+    // ? Obtenemos el logout
+    const { logout } = useAuth({});
 
     const verifyOrder = () => order.length === 0;
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        handleSubmitNuevaOrden( logout );
+        
+    };
 
     return (
         <aside className="md:w-72 h-screen overflow-y-scroll p-5 border-t-[14px] border-amber-400 shadow-xl">
@@ -38,7 +49,7 @@ export const Summary = () => {
                     { formatPrice( total ) }
                 </p>
             </div>
-            <form className="w-full mt-5">
+            <form onSubmit={ handleSubmit } className="w-full mt-5">
                 <button 
                     type="submit" 
                     disabled={ verifyOrder() } 
